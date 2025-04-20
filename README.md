@@ -13,7 +13,6 @@ O Eventify é um aplicativo que permite seus usuários divulgarem eventos e mani
 Para futuras versões, seria permitido comprar um ingresso pelo app, contemplando os seguintes requisitos:
 
 - [ ] Escolher um evento e comprar ingressos;
-[Uploading eventify-database.drawio…]()
 
 ## Protótipos de tela
 
