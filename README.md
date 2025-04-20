@@ -23,6 +23,8 @@ Para futuras versões, seria permitido comprar um ingresso pelo app, contempland
 
 Banco de dados da aplicação. Será usado um banco de dados relacional, como o SQLite/Postgres.
 
+![Eventify Database](eventify-database.drawio.png)
+
 ## Planejamento das Sprints
 
 - [ ] Prototipação das telas - 2 semanas
