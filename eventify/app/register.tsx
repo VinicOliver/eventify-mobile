@@ -1,19 +1,32 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { Checkbox } from "./components/checkbox";
 
-export default function Index() {
+export default function Register() {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [organizer, setOrganizer] = useState(false);
 
-    const handleLogin = () => {
-      console.log(email, password);
+    const handleRegister = () => {
+      console.log(name, email, password, organizer);
     }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Eventify</Text>
 
+      <TextInput
+        placeholder="Nome"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+        keyboardType="default"
+        autoCapitalize="none"
+        placeholderTextColor={'#AAAAAA'}
+      />
+      
       <TextInput
         placeholder="E-mail"
         value={email}
@@ -33,12 +46,14 @@ export default function Index() {
         placeholderTextColor={'#AAAAAA'}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
+      <Checkbox label='Sou Organizador' value={organizer} onChange={setOrganizer} />
+
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/register')}>
-        <Text style={styles.loginLabel}>Criar conta</Text>
+      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/')}>
+        <Text style={styles.loginLabel}>Fazer Login</Text>
       </TouchableOpacity>
     </View>
   )
