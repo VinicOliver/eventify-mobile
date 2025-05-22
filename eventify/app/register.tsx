@@ -11,7 +11,7 @@ export default function Register() {
 
     const handleRegister = () => {
       console.log(name, email, password, organizer);
-      router.push("/event/create");
+      router.replace('/event');
     }
 
   return (

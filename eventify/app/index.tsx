@@ -8,7 +8,7 @@ export default function Index() {
 
     const handleLogin = () => {
       console.log(email, password);
-      router.push("/event/create");
+      router.replace('/event');
     }
 
   return (
