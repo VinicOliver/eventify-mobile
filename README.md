@@ -4,15 +4,15 @@
 
 O Eventify é um aplicativo que permite seus usuários divulgarem eventos e manifestações culturais, como shows, mostras de cinema, peça de teatro entre outras atividades, permitindo que outros usuários possam encontrar atividades de seu interesse ou explorar novas.
 
-- [ ] Cadastrar usuários, considerando os organizadores;
-- [ ] Realizar login/logout;
-- [ ] Permitir que os usuários organizadores criem eventos;
-- [ ] Buscar eventos por localidade e categoria;
-- [ ] Vizualizar detalhes de um evento;
+- Cadastrar usuários, considerando os organizadores;
+- Realizar login/logout;
+- Permitir que os usuários organizadores criem eventos;
+- Buscar eventos por localidade e categoria;
+- Vizualizar detalhes de um evento;
 
 Para futuras versões, seria permitido comprar um ingresso pelo app, contemplando os seguintes requisitos:
 
-- [ ] Escolher um evento e comprar ingressos;
+- Escolher um evento e comprar ingressos;
 
 ## Protótipos de tela
 
