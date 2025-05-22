@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
+import { router } from "expo-router";
+import BackButton from "../components/backButton";
 
 export default function CreateEvent() {
   const [image, setImage] = useState('');
@@ -24,10 +26,15 @@ export default function CreateEvent() {
 
   const handleCreateEvent = () => {
     console.log(image, title, localization, date, description);
+    router.push('event');
   }
 
   return(
     <ScrollView style={styles.container}>
+      <Text style={styles.logo}>Eventify</Text>
+
+      <BackButton />
+
       <Text style={styles.title}>
         Novo evento
       </Text>
@@ -79,6 +86,14 @@ export default function CreateEvent() {
 }
 
 const styles = StyleSheet.create({
+  logo: {
+    fontSize: 42,
+    fontWeight: 'bold',
+    marginBottom: 80,
+    textAlign: 'center',
+    color: '#e50914',
+    marginTop: 0
+  },
   title: {
     color: '#fff',
     fontSize: 20,
@@ -97,7 +112,7 @@ const styles = StyleSheet.create({
     borderColor: '#333333',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 12,
+    marginBottom: 24,
     backgroundColor: '#333333',
   },
   imageButtonText: {
@@ -106,7 +121,7 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    marginBottom: 12,
+    marginBottom: 24,
     borderRadius: 8
   },
   input: { 
@@ -114,7 +129,7 @@ const styles = StyleSheet.create({
     borderColor: '#333333',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 12,
+    marginBottom: 24,
     backgroundColor: '#333333',
     color: '#AAAAAA'
   },
