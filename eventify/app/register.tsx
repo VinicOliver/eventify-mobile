@@ -1,6 +1,6 @@
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { useState } from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Checkbox } from "./components/checkbox";
 
 export default function Register() {
@@ -11,6 +11,7 @@ export default function Register() {
 
     const handleRegister = () => {
       console.log(name, email, password, organizer);
+      router.push("/event/create");
     }
 
   return (

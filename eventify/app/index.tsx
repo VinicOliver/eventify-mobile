@@ -1,6 +1,6 @@
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { useState } from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 
 export default function Index() {
     const [email, setEmail] = useState('');
@@ -8,6 +8,7 @@ export default function Index() {
 
     const handleLogin = () => {
       console.log(email, password);
+      router.push("/event/create");
     }
 
   return (
