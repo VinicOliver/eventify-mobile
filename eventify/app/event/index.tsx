@@ -1,8 +1,9 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
-import { events } from "../data/events";
+import { events } from "../../data/events";
 import { useState } from "react";
-import EventCard from "../components/eventCard";
+import EventCard from "../../components/eventCard";
 import { router } from "expo-router";
+import BackButton from "../../components/backButton";
 
 export default function EventFeed() {
   const [search, setSearch] = useState('');
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  input: { 
+  input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
-import BackButton from "../components/backButton";
+import BackButton from "../../components/backButton";
 
 export default function CreateEvent() {
   const [image, setImage] = useState('');
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderRadius: 8
   },
-  input: { 
+  input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,
