@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import { Checkbox } from "./components/checkbox";
+import { Checkbox } from "../components/checkbox";
 
 export default function Register() {
     const [name, setName] = useState('');
@@ -27,7 +27,7 @@ export default function Register() {
         autoCapitalize="none"
         placeholderTextColor={'#AAAAAA'}
       />
-      
+
       <TextInput
         placeholder="E-mail"
         value={email}
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#e50914'
   },
-  input: { 
+  input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,

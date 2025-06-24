@@ -1,6 +1,6 @@
-import rockShow from '../../assets/rockShow.jpg';
-import techEvent from '../../assets/techEvent.jpg';
-import streetRace from '../../assets/streetRace.jpg';
+import rockShow from '../assets/rockShow.jpg';
+import techEvent from '../assets/techEvent.jpg';
+import streetRace from '../assets/streetRace.jpg';
 
 export const events = [
   {
