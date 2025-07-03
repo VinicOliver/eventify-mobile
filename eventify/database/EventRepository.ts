@@ -37,4 +37,9 @@ export class EventRepository {
 
     return result;
   }
+
+  async getById(id: any) {
+    const result = await db.getFirstAsync<Event>('SELECT * FROM events WHERE id = ?;', [id]);
+    return result;
+  }
 }

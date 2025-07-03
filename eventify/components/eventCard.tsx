@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
 
 interface EventCardProps {
   event: {
@@ -12,17 +13,21 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event }: EventCardProps) {
+  const router = useRouter();
+
   return(
-    <View style={styles.card}>
-      <Image
-        source={typeof event.image === 'string' ? { uri: event.image } : event.image}
-        style={styles.image}
-      />
-      <Text style={styles.title}>{event.title}</Text>
-      <Text style={styles.date}>{new Date(event.date).toLocaleDateString()}</Text>
-      <Text style={styles.localization}>{event.localization}</Text>
-      <Text style={styles.description}>{event.description}</Text>
-    </View>
+    <TouchableOpacity onPress={() => router.push(`/event/${event.id}`)} >
+      <View style={styles.card}>
+        <Image
+          source={typeof event.image === 'string' ? { uri: event.image } : event.image}
+          style={styles.image}
+        />
+        <Text style={styles.title}>{event.title}</Text>
+        <Text style={styles.date}>{new Date(event.date).toLocaleDateString()}</Text>
+        <Text style={styles.localization}>{event.localization}</Text>
+        <Text style={styles.description}>{event.description}</Text>
+      </View>
+    </TouchableOpacity>
   );
 }
 

@@ -2,7 +2,6 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react
 import { useEffect, useState } from "react";
 import EventCard from "../../components/eventCard";
 import { router } from "expo-router";
-import BackButton from "../../components/backButton";
 import { EventRepository } from "../../database/EventRepository";
 import { Event } from "../../types/event.type";
 
