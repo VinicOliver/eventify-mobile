@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Checkbox } from "../components/checkbox";
 import { UserRepository } from "../database/UserRepository";
@@ -12,15 +12,13 @@ export default function Register() {
     const [password, setPassword] = useState('');
     const [organizer, setOrganizer] = useState(false);
 
-    const handleRegister = () => {
-      const userId = userRepository.save({
+    const handleRegister = async () => {
+      await userRepository.save({
         name: name,
         email: email,
         password: password,
         organizer: organizer
       });
-
-      console.log(userId);
 
       router.replace('/event');
     }
