@@ -1,9 +1,9 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 interface EventCardProps {
   event: {
-    id: number;
-    image: ImageSourcePropType | undefined;
+    id?: number;
+    image: string;
     title: string;
     date: string;
     localization: string;
@@ -14,7 +14,10 @@ interface EventCardProps {
 export default function EventCard({ event }: EventCardProps) {
   return(
     <View style={styles.card}>
-      <Image source={event.image} style={styles.image} />
+      <Image
+        source={typeof event.image === 'string' ? { uri: event.image } : event.image}
+        style={styles.image}
+      />
       <Text style={styles.title}>{event.title}</Text>
       <Text style={styles.date}>{new Date(event.date).toLocaleDateString()}</Text>
       <Text style={styles.localization}>{event.localization}</Text>

@@ -3,6 +3,9 @@ import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
 import BackButton from "../../components/backButton";
+import { EventRepository } from "../../database/EventRepository";
+
+const eventRepository = new EventRepository();
 
 export default function CreateEvent() {
   const [image, setImage] = useState('');
@@ -24,8 +27,15 @@ export default function CreateEvent() {
     }
   }
 
-  const handleCreateEvent = () => {
-    console.log(image, title, localization, date, description);
+  const handleCreateEvent = async () => {
+    const eventId = await eventRepository.save({
+      title: title,
+      localization: localization,
+      date: date,
+      image: image,
+      description: description
+    });
+
     router.push('event');
   }
 

@@ -1,12 +1,25 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
-import { events } from "../../data/events";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EventCard from "../../components/eventCard";
 import { router } from "expo-router";
 import BackButton from "../../components/backButton";
+import { EventRepository } from "../../database/EventRepository";
+import { Event } from "../../types/event.type";
+
+const eventRepository = new EventRepository();
 
 export default function EventFeed() {
   const [search, setSearch] = useState('');
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    const getEvents = async () => {
+      const result = await eventRepository.getAll();
+      setEvents(result);
+    }
+
+    getEvents();
+  }, []);
 
   return(
     <ScrollView style={styles.container}>
