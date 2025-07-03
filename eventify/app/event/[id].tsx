@@ -15,7 +15,7 @@ export default function EventDetail() {
   useEffect(() => {
     const getEvent = async () => {
       if(id) {
-        const result = await eventRepository.getById(id);
+        const result = await eventRepository.getById(+id);
         setEvent(result);
       }
     }

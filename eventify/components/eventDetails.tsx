@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Event } from "../types/event.type";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 interface EventDetailsProps {
   event: Event;
@@ -20,7 +21,7 @@ export default function EventDetails({ event }: EventDetailsProps) {
       <Text style={styles.description}>{event.description}</Text>
 
       <View style={styles.actionRow}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push(`/event/edit/${event.id}`)} >
           <Ionicons name="create-outline" size={24} color="#555" />
         </TouchableOpacity>
 

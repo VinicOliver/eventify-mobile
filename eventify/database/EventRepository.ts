@@ -22,7 +22,7 @@ export class EventRepository {
     try {
     const result = await db.runAsync(
       'INSERT INTO events (title, localization, date, image, description) VALUES (?, ?, ?, ?, ?);',
-      [event.title, event.localization, event.date, event.image, event.description]
+      [event.title ?? '', event.localization ?? '', event.date ?? '', event.image ?? '', event.description ?? '']
     );
 
     return result;
@@ -38,8 +38,16 @@ export class EventRepository {
     return result;
   }
 
-  async getById(id: any) {
+  async getById(id: number) {
     const result = await db.getFirstAsync<Event>('SELECT * FROM events WHERE id = ?;', [id]);
+    return result;
+  }
+
+  async update(id: number, event: Event) {
+    const result = await db.runAsync(
+      'UPDATE events SET title = ?, localization = ?, date = ?, image = ?, description = ? WHERE id = ?;',
+      [event.title ?? '', event.localization ?? '', event.date ?? '', event.image ?? '', event.description ?? '', id]
+    );
     return result;
   }
 }
