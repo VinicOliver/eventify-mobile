@@ -3,17 +3,31 @@ import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { LoginSchema } from "../validations/loginSchema";
 import { LoginSchemaError } from "../types/errors/loginSchemaError";
+import { UserRepository } from "../database/UserRepository";
+import { useAuth } from "../hooks/useAuth";
+
+const userRepository = new UserRepository();
 
 export default function Index() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<LoginSchemaError>({});
 
-    const handleLogin = () => {
+    const login = useAuth((state) => state.login);
+
+    const handleLogin = async () => {
       const loginValidated = LoginSchema.safeParse({ email, password });
       setErrors({});
 
       if (loginValidated.success) {
+        const user = await userRepository.findByEmailAndPassword(loginValidated.data.email, loginValidated.data.password);
+
+        if(!user) {
+          setErrors({ email: 'Credenciais inválidas'});
+          return;
+        }
+
+        login(user);
         router.replace('/event');
       } else {
         loginValidated.error.issues.map(error => {
