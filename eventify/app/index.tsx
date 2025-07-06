@@ -1,38 +1,55 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { LoginSchema } from "../validations/loginSchema";
+import { LoginSchemaError } from "../types/errors/loginSchemaError";
 
 export default function Index() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState<LoginSchemaError>({});
 
     const handleLogin = () => {
-      console.log(email, password);
-      router.replace('/event');
+      const loginValidated = LoginSchema.safeParse({ email, password });
+      setErrors({});
+
+      if (loginValidated.success) {
+        router.replace('/event');
+      } else {
+        loginValidated.error.issues.map(error => {
+          setErrors(prev => ({ ...prev, [error.path[0]]: error.message}));
+        })
+      }
     }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Eventify</Text>
 
-      <TextInput
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        placeholderTextColor={'#AAAAAA'}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="E-mail"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor={'#AAAAAA'}
+        />
+        {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-        placeholderTextColor={'#AAAAAA'}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+          secureTextEntry
+          placeholderTextColor={'#AAAAAA'}
+        />
+        {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
@@ -60,12 +77,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#e50914'
   },
-  input: { 
+    inputContainer: {
+    marginBottom: 16,
+  },
+  input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 12,
+    marginBottom: 6,
     backgroundColor: '#333333',
     color: '#AAAAAA'
   },
