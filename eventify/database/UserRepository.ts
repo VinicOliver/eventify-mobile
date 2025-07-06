@@ -36,4 +36,10 @@ export class UserRepository {
     const user = await db.getFirstAsync<User>('SELECT * FROM users WHERE email = ? AND password = ?;', [email, password]);
     return user;
   }
+
+  async update(user: User, id: number) {
+    const result = await db.runAsync(
+      'UPDATE users SET name = ?, email = ? WHERE id = ?;',
+      [user.name, user.email, id])
+  }
 }

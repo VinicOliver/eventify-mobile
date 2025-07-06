@@ -25,7 +25,7 @@ export default function EventFeed() {
 
   return(
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+      <TouchableOpacity style={styles.profileButton} onPress={() => router.push('/profile') }>
         <Ionicons name="person-outline" size={24} color="#555" />
       </TouchableOpacity>
       <Text style={styles.logo}>Eventify</Text>
@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#e50914',
     marginTop: 0
+  },
+  profileButton: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   },
   title: {
     color: '#fff',
