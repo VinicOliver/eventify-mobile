@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import { router } from "expo-router";
 import BackButton from "../../components/backButton";
 import { EventRepository } from "../../database/EventRepository";
+import { EventSchema } from "../../validations/eventSchema";
+import { EventSchemaError } from "../../types/errors/eventSchemaError";
 
 const eventRepository = new EventRepository();
 
@@ -13,6 +15,7 @@ export default function CreateEvent() {
   const [localization, setLocalization] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
+  const [errors, setErrors] = useState<EventSchemaError>({});
 
   const handlePickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -28,15 +31,17 @@ export default function CreateEvent() {
   }
 
   const handleCreateEvent = async () => {
-    const eventId = await eventRepository.save({
-      title: title,
-      localization: localization,
-      date: date,
-      image: image,
-      description: description
-    });
+    const eventValidated = EventSchema.safeParse({ title, localization, date, image, description});
+    setErrors({});
 
-    router.push('event');
+    if(eventValidated.success) {
+      const eventId = await eventRepository.save(eventValidated.data);
+      router.push('event');
+    } else {
+      eventValidated.error.issues.map(error => {
+        setErrors(prev => ({ ...prev, [error.path[0]]: error.message}));
+      });
+    }
   }
 
   return(
@@ -54,39 +59,51 @@ export default function CreateEvent() {
       </TouchableOpacity>
       {image && <Image source={{ uri: image }} style={styles.image} />}
 
-      <TextInput
-        placeholder="Título do evento"
-        value={title}
-        onChangeText={setTitle}
-        style={styles.input}
-        placeholderTextColor="#AAAAAA"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Título do evento"
+          value={title}
+          onChangeText={setTitle}
+          style={styles.input}
+          placeholderTextColor="#AAAAAA"
+        />
+        {errors.title && <Text style={{ color: 'red' }}>{errors.title}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="Localização"
-        value={localization}
-        onChangeText={setLocalization}
-        style={styles.input}
-        placeholderTextColor="#AAAAAA"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Localização"
+          value={localization}
+          onChangeText={setLocalization}
+          style={styles.input}
+          placeholderTextColor="#AAAAAA"
+        />
+        {errors.localization && <Text style={{ color: 'red' }}>{errors.localization}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="Data"
-        value={date}
-        onChangeText={setDate}
-        style={styles.input}
-        placeholderTextColor="#AAAAAA"
-        textContentType="dateTime"
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Data"
+          value={date}
+          onChangeText={setDate}
+          style={styles.input}
+          placeholderTextColor="#AAAAAA"
+          textContentType="dateTime"
+        />
+        {errors.date && <Text style={{ color: 'red' }}>{errors.date}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="Descrição"
-        value={description}
-        onChangeText={setDescription}
-        style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
-        multiline
-        placeholderTextColor="#AAAAAA"
-      />
+      <View>
+        <TextInput
+          placeholder="Descrição"
+          value={description}
+          onChangeText={setDescription}
+          style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
+          multiline
+          placeholderTextColor="#AAAAAA"
+        />
+        {errors.description && <Text style={{ color: 'red' }}>{errors.description}</Text>}
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleCreateEvent}>
         <Text style={styles.buttonText}>Criar</Text>
@@ -134,12 +151,15 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     borderRadius: 8
   },
+  inputContainer: {
+    marginBottom: 16
+  },
   input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 24,
+    marginBottom: 6,
     backgroundColor: '#333333',
     color: '#AAAAAA'
   },
