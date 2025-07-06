@@ -31,4 +31,9 @@ export class UserRepository {
     const users = await db.getAllAsync<User>("SELECT * FROM users");
     return users;
   }
+
+  async findByEmailAndPassword(email: string, password: string) {
+    const user = await db.getFirstAsync<User>('SELECT * FROM users WHERE email = ? AND password = ?;', [email, password]);
+    return user;
+  }
 }

@@ -1,15 +1,18 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useEffect, useState } from "react";
 import EventCard from "../../components/eventCard";
 import { router } from "expo-router";
 import { EventRepository } from "../../database/EventRepository";
 import { Event } from "../../types/event.type";
+import { useAuth } from "../../hooks/useAuth";
+import { Ionicons } from "@expo/vector-icons";
 
 const eventRepository = new EventRepository();
 
 export default function EventFeed() {
   const [search, setSearch] = useState('');
   const [events, setEvents] = useState<Event[]>([]);
+  const isOrganizer = useAuth((state) => state.isOrganizer());
 
   useEffect(() => {
     const getEvents = async () => {
@@ -22,11 +25,16 @@ export default function EventFeed() {
 
   return(
     <ScrollView style={styles.container}>
+      <TouchableOpacity style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+        <Ionicons name="person-outline" size={24} color="#555" />
+      </TouchableOpacity>
       <Text style={styles.logo}>Eventify</Text>
 
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/event/create')}>
-        <Text style={styles.buttonText}>Criar evento</Text>
-      </TouchableOpacity>
+      {isOrganizer &&
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/event/create')}>
+          <Text style={styles.buttonText}>Criar evento</Text>
+        </TouchableOpacity>
+      }
 
       <Text style={styles.title}>Descubra</Text>
       <TextInput
