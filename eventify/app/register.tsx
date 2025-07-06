@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import { Checkbox } from "../components/checkbox";
 import { UserRepository } from "../database/UserRepository";
+import { RegisterSchema } from "../validations/registerSchema";
+import { RegisterSchemaError } from "../types/errors/registerSchemaError";
 
 const userRepository = new UserRepository();
 
@@ -11,50 +13,63 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [organizer, setOrganizer] = useState(false);
+    const [errors, setErrors] = useState<RegisterSchemaError>({});
 
     const handleRegister = async () => {
-      await userRepository.save({
-        name: name,
-        email: email,
-        password: password,
-        organizer: organizer
-      });
+      const registerValidated = RegisterSchema.safeParse({ name, email, password, organizer });
+      setErrors({});
 
-      router.replace('/event');
+      if(registerValidated.success) {
+        await userRepository.save(registerValidated.data);
+        router.replace('/event');
+      } else {
+        registerValidated.error.issues.map(error => {
+          setErrors(prev => ({ ...prev, [error.path[0]]: error.message}));
+        });
+      }
     }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Eventify</Text>
 
-      <TextInput
-        placeholder="Nome"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-        keyboardType="default"
-        autoCapitalize="none"
-        placeholderTextColor={'#AAAAAA'}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Nome"
+          value={name}
+          onChangeText={setName}
+          style={styles.input}
+          keyboardType="default"
+          autoCapitalize="none"
+          placeholderTextColor={'#AAAAAA'}
+        />
+        {errors.name && <Text style={{ color: 'red' }}>{errors.name}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        placeholderTextColor={'#AAAAAA'}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="E-mail"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor={'#AAAAAA'}
+        />
+        {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+      </View>
 
-      <TextInput
-        placeholder="Senha"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-        placeholderTextColor={'#AAAAAA'}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Senha"
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+          secureTextEntry
+          placeholderTextColor={'#AAAAAA'}
+        />
+        {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+      </View>
 
       <Checkbox label='Sou Organizador' value={organizer} onChange={setOrganizer} />
 
@@ -84,12 +99,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#e50914'
   },
+  inputContainer: {
+    marginBottom: 16
+  },
   input: {
     borderWidth: 1,
     borderColor: '#333333',
     borderRadius: 8,
     padding: 10,
-    marginBottom: 12,
+    marginBottom: 6,
     backgroundColor: '#333333',
     color: '#AAAAAA'
   },
